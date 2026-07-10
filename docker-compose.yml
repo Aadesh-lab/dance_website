@@ -1,0 +1,88 @@
+version: "3.9"
+
+services:
+  minio:
+    image: minio/minio:latest
+    container_name: lldance-minio
+    restart: unless-stopped
+    ports:
+      - "9000:9000"   # S3 API (used for direct file URLs)
+      - "9001:9001"   # Web console
+    environment:
+      MINIO_ROOT_USER: minioadmin
+      MINIO_ROOT_PASSWORD: llmdance123#
+      MINIO_BROWSER_REDIRECT_URL: http://localhost:9001
+    volumes:
+      - minio_data:/data
+    command: server /data --console-address ":9001"
+    healthcheck:
+      test: ["CMD", "curl", "-f", "http://localhost:9000/minio/health/live"]
+      interval: 15s
+      timeout: 5s
+      retries: 5
+
+  minio-init:
+    image: minio/mc:latest
+    container_name: lldance-minio-init
+    depends_on:
+      minio:
+        condition: service_healthy
+    entrypoint: >
+      /bin/sh -c "
+      mc alias set local http://minio:9000 minioadmin llmdance123# &&
+      mc mb --ignore-existing local/lldance &&
+      mc anonymous set download local/lldance &&
+      echo 'Bucket lldance ready (public read).'
+      "
+
+  postgres:
+    image: postgres:16-alpine
+    container_name: lldance-postgres
+    restart: unless-stopped
+    environment:
+      POSTGRES_USER: lldance
+      POSTGRES_PASSWORD: lldance
+      POSTGRES_DB: lldance
+    ports:
+      - "5432:5432"
+    volumes:
+      - postgres_data:/var/lib/postgresql/data
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U lldance"]
+      interval: 10s
+      timeout: 5s
+      retries: 5
+
+  backend:
+    build: .
+    container_name: lldance-backend
+    restart: unless-stopped
+    depends_on:
+      postgres:
+        condition: service_healthy
+      minio:
+        condition: service_healthy
+    environment:
+      PORT: "8080"
+      ENV: "development"
+      DB_HOST: postgres
+      DB_PORT: "5432"
+      DB_USER: lldance
+      DB_PASSWORD: lldance
+      DB_NAME: lldance
+      DB_SCHEMA: public
+      JWT_SECRET: change-me-in-prod
+      ADMIN_USERNAME: admin
+      ADMIN_PASSWORD: admin123
+      MINIO_ENDPOINT: minio:9000
+      MINIO_ACCESS_KEY: minioadmin
+      MINIO_SECRET_KEY: llmdance123#
+      MINIO_BUCKET: lldance
+      MINIO_PUBLIC_URL: http://localhost:9000
+      MINIO_USE_SSL: "false"
+    ports:
+      - "8080:8080"
+
+volumes:
+  minio_data:
+  postgres_data:

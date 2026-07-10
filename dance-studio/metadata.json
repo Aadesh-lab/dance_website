@@ -1,0 +1,6 @@
+{
+  "name": "Artist Rhythm",
+  "description": "A landing page for Artist Rhythm dance center",
+  "requestFramePermissions": [],
+  "majorCapabilities": ["MAJOR_CAPABILITY_SERVER_SIDE_GEMINI_API"]
+}

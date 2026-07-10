@@ -1,0 +1,13 @@
+**/node_modules
+**/dist
+dance-studio/dist
+bin/
+internal/dist/*
+!internal/dist/.gitkeep
+.env
+.env.*
+!.env.example
+.git
+.gitignore
+*.log
+*.pdf
