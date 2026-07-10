@@ -216,7 +216,7 @@ export function ContactPage() {
           referrerPolicy="no-referrer-when-downgrade"
         />
         <div className="pointer-events-none absolute inset-0 flex items-center justify-center">
-          <div className="pointer-events-auto bg-white shadow-2xl px-6 py-5 flex items-center gap-4 max-w-md">
+          <div className="pointer-events-auto bg-white shadow-2xl px-6 py-5 flex items-center gap-4 max-w-md mx-4">
             <img src={settings.logo} alt="" className="w-12 h-12 rounded-full object-cover" />
             <div>
               <div className="font-serif text-lg text-brand-ink leading-tight">{settings.businessName}</div>

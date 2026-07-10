@@ -3,9 +3,9 @@ import { api } from '../lib/api';
 
 export function PageHeader({ title, subtitle, action }: { title: string; subtitle?: string; action?: React.ReactNode }) {
   return (
-    <div className="flex items-start justify-between mb-10 pb-6 border-b border-brand-ink/10">
+    <div className="flex flex-col sm:flex-row sm:items-start sm:justify-between gap-4 mb-6 sm:mb-10 pb-6 border-b border-brand-ink/10">
       <div>
-        <h1 className="font-serif text-4xl text-brand-ink">{title}</h1>
+        <h1 className="font-serif text-3xl sm:text-4xl text-brand-ink">{title}</h1>
         {subtitle && <p className="text-brand-muted text-sm mt-2">{subtitle}</p>}
       </div>
       {action}

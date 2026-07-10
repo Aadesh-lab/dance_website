@@ -50,7 +50,7 @@ export function Hero() {
               {settings.heroWelcomeEyebrow || 'Welcome'}
             </div>
             <div className="mt-3 h-px w-14 bg-brand-gold" />
-            <h1 className="mt-6 font-serif font-bold text-white uppercase tracking-tight leading-none text-5xl md:text-7xl lg:text-8xl drop-shadow-[0_2px_10px_rgba(0,0,0,0.6)] max-w-5xl">
+            <h1 className="mt-6 font-serif font-bold text-white uppercase tracking-tight leading-none text-4xl sm:text-5xl md:text-7xl lg:text-8xl drop-shadow-[0_2px_10px_rgba(0,0,0,0.6)] max-w-5xl">
               {settings.heroHeadline}
             </h1>
             {settings.heroSubline && (
